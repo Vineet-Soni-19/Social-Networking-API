@@ -11,6 +11,9 @@ dotenv.config();
 const port=process.env.PORT || 3000;
 const app=express();
 
+app.get('/',(req,res)=>{
+    res.send("Hello!, I have created REST api for social networking platform")
+})
 //mongodb connection
 mongoose.set('strictQuery',false);
 mongoose.connect(process.env.MONGODB_URL)
