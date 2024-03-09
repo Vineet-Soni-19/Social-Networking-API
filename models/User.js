@@ -1,7 +1,12 @@
 const mongoose=require("mongoose");
+const { v4: uuidv4 } = require('uuid');
 
 const UserSchema=new mongoose.Schema(
     {
+    userId: {
+        type: String, 
+        default: uuidv4
+    },
     username:{
         type: String,
         required: true,
@@ -24,38 +29,18 @@ const UserSchema=new mongoose.Schema(
         type: String,
         default: ""
     },
-    coverPicture:{
+    bio:{
         type: String,
-        default: ""
+        max: 50
     },
     followers:{
         type: Array,
         default: []
     },
-    followings:{
+    following:{
         type: Array,
         default: []
     },
-    isAdmin:{
-        type: Boolean,
-        default: false,
-    },
-    desc:{
-        type: String,
-        max: 50
-    },
-    city:{
-        type: String,
-        max:50
-    },
-    from :{
-        type: String,
-        max:50
-    },
-    relationship:{
-        type:Number,
-        enum:[1,2,3],
-    }
 },
     {timestamps:true}
 )

@@ -8,7 +8,7 @@ const authRoute=require("./routes/auth")
 const postRoute=require("./routes/posts")
 dotenv.config();
 
-const port=process.env.PORT || 8000;
+const port=process.env.PORT || 3000;
 const app=express();
 
 //mongodb connection
@@ -21,11 +21,11 @@ mongoose.connect(process.env.MONGODB_URL)
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
-app.use("/users",userRoute);
-app.use("/auth",authRoute);
-app.use("/posts",postRoute);
+app.use("/api/users",userRoute);
+app.use("/api/auth",authRoute);
+app.use("/api/posts",postRoute);
 
 
-app.listen(8000,()=>{
-    console.log("Backend server is running");
+app.listen(port,()=>{
+    console.log(`Backend server is running at: ${port}`);
 })
