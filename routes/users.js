@@ -18,11 +18,10 @@ router.put('/:id', async (req, res) => {
             const user = await User.findOneAndUpdate({ userId: req.params.id }, { $set: req.body });
             res.status(200).json("Account has been updated");
         } else {
-            // If the user ID in the request does not match the parameter ID, return a forbidden error
             return res.status(403).json('You can update only your account');
         }
     } catch (err) {
-        // Handle errors and respond with appropriate status code and error message
+        // Handle errors
         return res.status(500).json(err);
     }
 });
@@ -35,12 +34,11 @@ router.delete('/:id', async (req, res) => {
             // Delete the user document and respond
             const user = await User.findOneAndDelete({ userId: req.params.id });
             res.status(200).json("Account has been deleted");
-        } else {
-            // If the user ID in the request does not match the parameter ID, return a forbidden error
+        } else {r
             return res.status(403).json('You can deleted only your account');
         }
     } catch (err) {
-        // Handle errors and respond with appropriate status code and error message
+        // Handle errors
         return res.status(500).json(err);
     }
 });
@@ -57,7 +55,7 @@ router.get("/:id", async (req, res) => {
         const { password, updatedAt, ...other } = user._doc;
         res.status(200).json(other);
     } catch (err) {
-        // Handle errors and respond with appropriate status code and error message
+        // Handle errors
         return res.status(500).json(err);
     }
 });
@@ -71,7 +69,6 @@ router.get("/:userId/feed", async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-
         // Find posts from the user and users they follow
         const posts = await Post.find({ userId: { $in: [...user.following, user.userId] } })
             .sort({ timestamp: -1 })

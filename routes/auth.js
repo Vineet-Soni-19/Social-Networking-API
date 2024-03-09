@@ -73,6 +73,7 @@ const verifyToken = (req, res, next) => {
         if (err) {
             return res.status(401).json({ error: 'Unauthorized' });
         }
+        // Attach user ID to request object
         req.userId = decoded.userId;
         next();
     });
@@ -81,10 +82,12 @@ const verifyToken = (req, res, next) => {
 // Protected route example
 router.get('/profile', verifyToken, async (req, res) => {
     try {
+        // Find user by user ID
         const user = await User.findById(req.userId);
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
+        // Return user profile data
         res.status(200).json(user);
     } catch (error) {
         console.error('Error occurred while fetching user profile:', error);
