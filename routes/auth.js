@@ -1,57 +1,93 @@
-const router = require("express").Router();
-const User = require("../models/User");
+const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const router = express.Router();
 
-// Sign Up Endpoint
-router.post("/signup", async (req, res) => {
+// Sign up endpoint
+router.post('/signup', async (req, res) => {
     try {
-        // Generate a salt and hash the password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const { username, email, password } = req.body;
 
-        // Create a new user object with hashed password
-        const newUser = await new User({
-            username: req.body.username,
-            email: req.body.email,
-            password: hashedPassword,
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ error: 'User already exists' });
+        }
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create new user
+        const newUser = new User({
+            username,
+            email,
+            password: hashedPassword
         });
 
-        // Save the new user to the database
-        const user = await newUser.save();
+        // Save user to database
+        await newUser.save();
 
-        // Respond with the newly created user
-        res.status(200).json(user);
-    } catch (err) {
-        // Handle errors and respond with appropriate status code and error message
-        console.error('Error occurred during sign-up:', err);
+        res.status(201).json({ message: 'User created successfully' });
+    } catch (error) {
+        console.error('Error occurred during sign up:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-// Log In Endpoint
-router.post("/login", async (req, res) => {
+// Log in endpoint
+router.post('/login', async (req, res) => {
     try {
-        // Find the user by email
-        const user = await User.findOne({ email: req.body.email });
+        const { email, password } = req.body;
 
-        // If user does not exist, return 404 error
+        // Find user by email
+        const user = await User.findOne({ email });
         if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(401).json({ error: 'Invalid credentials' });
         }
 
         // Compare passwords
-        const validPassword = await bcrypt.compare(req.body.password, user.password);
-
-        // If password is invalid, return 400 error
-        if (!validPassword) {
-            return res.status(400).json({ error: 'Wrong password' });
+        const passwordsMatch = await bcrypt.compare(password, user.password);
+        if (!passwordsMatch) {
+            return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // If everything is successful, respond with user information
+        // Generate JWT token
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.status(200).json({ token });
+    } catch (error) {
+        console.error('Error occurred during login:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Middleware to verify JWT token
+const verifyToken = (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        req.userId = decoded.userId;
+        next();
+    });
+};
+
+// Protected route example
+router.get('/profile', verifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
         res.status(200).json(user);
-    } catch (err) {
-        // Handle errors and respond with appropriate status code and error message
-        console.error('Error occurred during login:', err);
+    } catch (error) {
+        console.error('Error occurred while fetching user profile:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
