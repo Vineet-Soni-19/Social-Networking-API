@@ -10,8 +10,6 @@ Welcome to the Social Networking API, a Node.js application that provides endpoi
 - [API Endpoints](#api-endpoints)
 - [Authentication](#authentication)
 - [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Installation
 
@@ -44,6 +42,16 @@ Welcome to the Social Networking API, a Node.js application that provides endpoi
 - morgan: HTTP request logger middleware for Express.
 - nodemon: Utility that automatically restarts the server when changes are detected.
 - uuid: Library for generating UUIDs (Universally Unique Identifiers).
+
+4. Create a `.env` file in the root directory of the project:
+
+   ```
+   PORT=3000
+   MONGODB_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret_key
+   ```
+
+   Replace `your_mongodb_connection_string` with the connection string for your MongoDB database and `your_jwt_secret_key` with a secret key for JWT token generation.
 
 ## Usage
 
@@ -92,11 +100,3 @@ To run tests for the Social Networking API, use the following command:
 ```
 npm test
 ```
-
-## Contributing
-
-Contributions to the Social Networking API are welcome! If you encounter any bugs, have suggestions for enhancements, or would like to submit a pull request, please follow the guidelines outlined in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
