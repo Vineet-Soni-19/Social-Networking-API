@@ -10,6 +10,7 @@ Welcome to the Social Networking API, a Node.js application that provides endpoi
 - [API Endpoints](#api-endpoints)
 - [Authentication](#authentication)
 - [Testing](#testing)
+- [API Documentation](#api-documentation)
 
 ## Installation
 
@@ -100,3 +101,6 @@ To run tests for the Social Networking API, use the following command:
 ```
 npm test
 ```
+## API Documentation
+
+The API documentation for the Social Networking API can be found [here](https://documenter.getpostman.com/view/30350776/2sA2xh3Ctp).
