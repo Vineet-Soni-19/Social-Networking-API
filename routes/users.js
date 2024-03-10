@@ -3,6 +3,7 @@ const User = require("../models/User");
 const Post = require("../models/Post");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require('uuid');
+const Follow = require("../models/Follow");
 
 // Update User Endpoint
 router.put('/:id', async (req, res) => {
@@ -16,7 +17,7 @@ router.put('/:id', async (req, res) => {
             }
             // Update the user document and respond
             const user = await User.findOneAndUpdate({ userId: req.params.id }, { $set: req.body });
-            res.status(200).json("Account has been updated");
+            res.status(200).json({message: "Account has been updated"});
         } else {
             return res.status(403).json('You can update only your account');
         }
@@ -33,7 +34,9 @@ router.delete('/:id', async (req, res) => {
         if (req.body.userId === req.params.id) {
             // Delete the user document and respond
             const user = await User.findOneAndDelete({ userId: req.params.id });
-            res.status(200).json("Account has been deleted");
+            await Post.findOneAndDelete({userId: req.params.id});
+            await Follow.findOneAndDelete({userId: req.params.id});
+            res.status(200).json({message: "Account has been deleted"});
         } else {r
             return res.status(403).json('You can deleted only your account');
         }

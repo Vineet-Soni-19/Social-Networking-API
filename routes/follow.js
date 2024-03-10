@@ -16,28 +16,31 @@ router.put("/:id/follow", async (req, res) => {
         let currentUser = await Follow.findOne({ userId: req.body.userId });
 
         // If user or current user doesn't exist, create new follow relationship
-        if (!user) {
-            user = await Follow.create({
-                userId: req.params.id,
-                followers: [req.body.userId]
-            });
-        }
-        if (!currentUser) {
-            currentUser = await Follow.create({
-                userId: req.body.userId,
-                following: [req.params.id]
-            });
+        if(!user || !currentUser){
+            if (!user) {
+                user = await Follow.create({
+                    userId: req.params.id,
+                    followers: [req.body.userId]
+                });
+            }
+            if (!currentUser) {
+                currentUser = await Follow.create({
+                    userId: req.body.userId,
+                    following: [req.params.id]
+                });
+            }
+            res.status(200).json({message: "User has been followed"});
         }
 
         // Check if the user is not already followed
-        if (!user.followers.includes(req.body.userId)) {
+        else if (!user.followers.includes(req.body.userId)) {
             // Update followers and followings arrays and respond
             await user.updateOne({ $push: { followers: req.body.userId } });
             await currentUser.updateOne({ $push: { following: req.params.id } });
-            res.status(200).json("User has been followed");
+            res.status(200).json({message: "User has been followed"});
         } else {
             // If the user is already followed, return a forbidden error
-            res.status(403).json("You already follow this user");
+            res.status(404).json({message: "You already follow this user"});
         }
     } catch (err) {
         // Handle errors and respond with appropriate status code and error message
@@ -68,10 +71,10 @@ router.put("/:id/unfollow", async (req, res) => {
             // Update followers and followings arrays and respond
             await user.updateOne({ $pull: { followers: req.body.userId } });
             await currentUser.updateOne({ $pull: { following: req.params.id } });
-            res.status(200).json("User has been unfollowed");
+            res.status(200).json({message:"User has been unfollowed"});
         } else {
             // If the user is not followed, return a forbidden error
-            res.status(403).json("You do not follow this user");
+            res.status(403).json({message:"You do not follow this user"});
         }
     } catch (err) {
         // Handle errors and respond with appropriate status code and error message

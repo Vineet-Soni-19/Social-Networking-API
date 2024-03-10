@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "mocha test/integrationtest.mjs",
     "start": "nodemon index.js"
   },
   "keywords": [],
@@ -11,14 +12,17 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "chai": "^5.1.0",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
+    "mocha": "^10.3.0",
     "mongodb": "^6.4.0",
     "mongoose": "^8.2.1",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.0",
+    "supertest": "^6.3.4",
     "uuid": "^9.0.1"
   }
 }

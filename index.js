@@ -29,7 +29,7 @@ app.use(helmet());
 app.use(morgan("common"));
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
-app.use("/api/follow", followRoute);
+app.use("/api/follows", followRoute);
 app.use("/api/posts", postRoute);
 
 app.listen(port, () => {
@@ -69,3 +69,5 @@ app.get('/api/follow', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+module.exports = app;

@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
         const savedPost = await newPost.save();
 
         // Respond with the newly created post
-        res.status(201).json(savedPost);
+        res.status(200).json(savedPost);
     } catch (err) {
         // Handle errors
         console.error('Error occurred during post creation:', err);
@@ -99,7 +99,7 @@ router.put("/:id/like", async (req, res) => {
         if (alreadyLiked) {
             // Unlike the post
             await Post.findByIdAndUpdate(req.params.id, { $pull: { likes: req.body.userId } });
-            res.status(200).json({ message: 'Post unliked successfully' });
+            res.status(200).json({ message: 'Post disliked successfully' });
         } else {
             // Like the post
             await Post.findByIdAndUpdate(req.params.id, { $push: { likes: req.body.userId } });
