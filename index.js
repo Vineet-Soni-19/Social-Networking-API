@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send("Hello!, I have created REST api for social networking platform");
+    res.send("<h2>Hello! I have created REST api for social networking platform</h2><p>Use: /api/users for users</p><p>Use: /api/posts for posts</p><p>Use: /api/follows for follows</p>");
 });
 
 //mongodb connection
