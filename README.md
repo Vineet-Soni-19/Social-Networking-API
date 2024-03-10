@@ -77,18 +77,21 @@ The Social Networking API offers the following features:
 
 The following API endpoints are available in the Social Networking API:
 
-- `POST /signup`: Register a new user.
-- `POST /login`: Authenticate and log in a user.
-- `GET /profile/:userId`: Get user profile information.
-- `PUT /profile/:userId`: Update user profile information.
-- `POST /post`: Create a new post.
-- `PUT /post/:postId`: Update an existing post.
-- `DELETE /post/:postId`: Delete a post.
-- `PUT /post/:postId/like`: Like a post.
-- `PUT /post/:postId/unlike`: Unlike a post.
-- `PUT /user/:userId/follow`: Follow a user.
-- `PUT /user/:userId/unfollow`: Unfollow a user.
-- `GET /user/:userId/following`: Get the list of users a given user is following.
+- `POST /api/auth/signup`: Register a new user.
+- `POST /api/auth/login`: Authenticate and log in a user.
+- `GET /api/users/:userId`: Get user profile information.
+- `PUT /api/users/:userId`: Update user profile information.
+- `DELETE /api/users/:userId`: Delete user profile.
+- `GET /api/users/:userId/feed`: Get user posts from people they follow.
+- `POST /api/posts`: Create a new post.
+- `PUT /api/posts/:postId`: Update an existing post.
+- `DELETE /api/posts/:postId`: Delete a post.
+- `PUT /api/posts/:postId/like`: Like a post.
+- `PUT /api/posts/:postId/unlike`: Unlike a post.
+- `PUT /api/user/:userId/follow`: Follow a user.
+- `PUT /api/user/:userId/unfollow`: Unfollow a user.
+- `GET /api/user/:userId/following`: Get the list of users a given user is following.
+- `GET /api/user/:userId/followers`: Get the list of users who follow given user.
 
 ## Authentication
 
