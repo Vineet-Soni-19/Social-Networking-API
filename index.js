@@ -14,10 +14,12 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.get('/', (req, res) => {
+    const fullUrl = `${req.protocol}://${req.hostname}:${port}${req.originalUrl}`;
+    console.log('Requested URL:', fullUrl);
     res.send(`<h2>Hello! I have created REST api for social networking platform</h2>
-    <p>Use: <a href="http://localhost:${port}/api/users">http://localhost:${port}/api/users</a> for users</p>
-    <p>Use: <a href="http://localhost:${port}/api/posts">http://localhost:${port}/api/posts</a> for posts</p>
-    <p>Use: <a href="http://localhost:${port}/api/follows">http://localhost:${port}/api/follows</a> for follows</p>`)
+    <p>Use: <a href="${fullUrl}api/users">${fullUrl}api/users</a> for users</p>
+    <p>Use: <a href="${fullUrl}api/posts">${fullUrl}api/posts</a> for posts</p>
+    <p>Use: <a href="${fullUrl}api/follows">${fullUrl}api/follows</a> for follows</p>`)
 });
 
 //mongodb connection
