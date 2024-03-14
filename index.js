@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
     res.send(`<h2>Hello! I have created REST api for social networking platform</h2>
     <p>Use: <a href="${fullUrl}api/users">${fullUrl}api/users</a> for users</p>
     <p>Use: <a href="${fullUrl}api/posts">${fullUrl}api/posts</a> for posts</p>
-    <p>Use: <a href="${fullUrl}api/follows">${fullUrl}api/follows</a> for follows</p>`)
+    <p>Use: <a href="${fullUrl}api/follows">${fullUrl}api/follow</a> for follows</p>`)
 });
 
 //mongodb connection
@@ -64,7 +64,7 @@ app.get('/api/posts', async (req, res) => {
     }
 });
 
-app.get('/api/follow', async (req, res) => {
+app.get('/api/follows', async (req, res) => {
     try {
         const Follow = require("./models/Follow");
         const follows = await Follow.find();
